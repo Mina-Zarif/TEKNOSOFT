@@ -18,9 +18,7 @@ class HomeBody extends StatelessWidget {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(10.0),
             clipBehavior: Clip.antiAliasWithSaveLayer,
-            child: Image.network(
-              kBannerImage,
-            ),
+            child: Image.network(kBannerImage),
           ),
         ),
         const SizedBox(height: 20),
@@ -83,7 +81,6 @@ class CategoryItemView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // width: 40,
       height: 30,
       decoration: BoxDecoration(
         color: color,

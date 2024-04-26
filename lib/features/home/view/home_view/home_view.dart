@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shopink/constants.dart';
 import 'package:shopink/features/cart/cart_view/cart_view.dart';
 import 'package:shopink/features/home/mange/home_cubit.dart';
 import 'package:shopink/features/home/view/home_view/widgets/custom_bottom_nav_bar.dart';
@@ -29,7 +28,8 @@ class HomeView extends StatelessWidget {
           return Scaffold(
             body: SafeArea(child: screens[cubit.currentIndex]),
             bottomNavigationBar: CustomBottomNavBar(
-              onTap: (value) => cubit.setState(() => cubit.currentIndex = value),
+              onTap: (value) =>
+                  cubit.setState(() => cubit.currentIndex = value),
               index: cubit.currentIndex,
             ),
           );

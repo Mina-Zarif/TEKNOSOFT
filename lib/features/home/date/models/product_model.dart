@@ -1,3 +1,5 @@
+import 'category_type.dart';
+
 class ProductModel {
   final String? id;
   final String? title;
@@ -7,16 +9,19 @@ class ProductModel {
   final List<String>? imagesUrl;
   final bool? isFavorite;
   final double? rating;
+  final CategoryType? categoryType;
 
-  ProductModel(
-      {this.id,
-      this.title,
-      this.description,
-      this.price,
-      this.imagesUrl,
-      this.isFavorite,
-      this.type,
-      this.rating});
+  ProductModel({
+    this.id,
+    this.title,
+    this.description,
+    this.price,
+    this.imagesUrl,
+    this.isFavorite,
+    this.type,
+    this.rating,
+    this.categoryType,
+  });
 
   factory ProductModel.fromJson(Map<String, dynamic> json) {
     return ProductModel(
@@ -30,6 +35,7 @@ class ProductModel {
           : null,
       isFavorite: json['isFavorite'],
       rating: json['rating'],
+      categoryType: json['categoryType'] == null ? null : CategoryType.values.byName(json['categoryType']),
     );
   }
 
@@ -42,5 +48,6 @@ class ProductModel {
         'imagesUrl': imagesUrl,
         'isFavorite': isFavorite,
         'rating': rating,
+        'categoryType': categoryType!.name
       };
 }

@@ -2,8 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:enefty_icons/enefty_icons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:shopink/features/home/date/models/product_model/product_model.dart';
+import 'package:shopink/core/fire_services/fire_services.dart';
+import 'package:shopink/features/home/date/models/category_type.dart';
+import 'package:shopink/features/home/date/models/product_model.dart';
 
+import '../../../../../core/utils/go_router.dart';
 import '../../../../../core/utils/styles.dart';
 import '../../../../../core/widgets/custom_circular_button.dart';
 
@@ -17,7 +20,7 @@ class NewArrivalProductsView extends StatelessWidget {
       stream: FirebaseFirestore.instance
           .collection('users')
           .doc(auth.currentUser!.uid)
-          .collection('new_arrival')
+          .collection(CategoryType.new_arrival.name)
           .snapshots(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
@@ -33,8 +36,13 @@ class NewArrivalProductsView extends StatelessWidget {
                   productId: snapshot.data!.docs[index].id,
                   productModel:
                       ProductModel.fromJson(snapshot.data!.docs[index].data()),
-                  onTap: () {},
-                  // onTap: () => AppRouter.router.push(AppRouter.detailsView),
+                  onTap: () => AppRouter.router.push(
+                    AppRouter.detailsView,
+                    extra: {
+                      'productId': snapshot.data!.docs[index].id,
+                      'categoryType': CategoryType.new_arrival,
+                    },
+                  ),
                 );
               },
             ),
@@ -47,7 +55,7 @@ class NewArrivalProductsView extends StatelessWidget {
 }
 
 class NewArrivalProductView extends StatelessWidget {
-  const NewArrivalProductView(
+  NewArrivalProductView(
       {super.key,
       required this.onTap,
       required this.productModel,
@@ -56,6 +64,7 @@ class NewArrivalProductView extends StatelessWidget {
   final VoidCallback onTap;
   final ProductModel productModel;
   final String productId;
+  final FireServices fireServices = FireServices();
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +79,7 @@ class NewArrivalProductView extends StatelessWidget {
           color: const Color(0xfff8f6f6),
           shadowColor: Colors.white,
           child: Padding(
-            padding: const EdgeInsetsDirectional.only(start: 20,end: 10),
+            padding: const EdgeInsetsDirectional.only(start: 20, end: 10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -116,22 +125,19 @@ class NewArrivalProductView extends StatelessWidget {
                     ),
                     CustomCircularButton(
                       onTap: () async {
-                        try {
-                          String currentUserUID =
-                              FirebaseAuth.instance.currentUser!.uid;
-                          await FirebaseFirestore.instance
-                              .collection('users')
-                              .doc(currentUserUID)
-                              .collection('new_arrival')
-                              .doc(productId)
-                              .update(
-                                  {'isFavorite': !productModel.isFavorite!});
-                        } on FirebaseAuthException catch (e) {
-                          if (context.mounted) {
+                        await fireServices.toggleFavorite(
+                          productId: productId,
+                          productModel: productModel,
+                          categoryType: CategoryType.new_arrival,
+                          onSuccess: () {},
+                          onError: (e) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text(e.message!)));
-                          }
-                        }
+                              SnackBar(
+                                content: Text(e),
+                              ),
+                            );
+                          },
+                        );
                       },
                       backgroundColor: Colors.white54,
                       iconColor: (productModel.isFavorite! == false)

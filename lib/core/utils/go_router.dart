@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:shopink/features/home/date/models/category_type.dart';
 import 'package:shopink/features/home/view/details_view/details_view.dart';
 import 'package:shopink/features/profile/profile_view/profile_view.dart';
 
@@ -35,7 +36,14 @@ abstract class AppRouter {
       ),
       GoRoute(
         path: detailsView,
-        builder: (context, state) => const DetailsView(),
+        builder: (context, state) {
+          final Map<String, dynamic> extra =
+              state.extra! as Map<String, dynamic>;
+          return DetailsView(
+            categoryType: extra['categoryType'] as CategoryType,
+            productId: extra['productId'] as String,
+          );
+        },
       ),
       GoRoute(
         path: profileView,

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:shopink/constants.dart';
 import 'package:shopink/core/utils/validation.dart';
 import 'package:shopink/core/widgets/custom_app_button.dart';
 import 'package:shopink/core/widgets/custom_text_field.dart';

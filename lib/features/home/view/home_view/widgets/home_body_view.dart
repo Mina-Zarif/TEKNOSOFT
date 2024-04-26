@@ -5,9 +5,7 @@ import 'package:shopink/core/utils/styles.dart';
 import '../../../../../constants.dart';
 import '../../../../../core/widgets/custom_appbar.dart';
 import '../../../../../core/widgets/custom_circular_button.dart';
-import 'best_seller_product_view.dart';
 import 'home_body.dart';
-import 'new_arrival_products_view.dart';
 
 class HomeBodyView extends StatelessWidget {
   const HomeBodyView({super.key});
@@ -43,5 +41,3 @@ class HomeBodyView extends StatelessWidget {
     );
   }
 }
-
-

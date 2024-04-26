@@ -2,8 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:enefty_icons/enefty_icons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:shopink/features/home/date/models/product_model/product_model.dart';
+import 'package:shopink/core/fire_services/fire_services.dart';
+import 'package:shopink/features/home/date/models/category_type.dart';
+import 'package:shopink/features/home/date/models/product_model.dart';
 
+import '../../../../../core/utils/go_router.dart';
 import '../../../../../core/utils/styles.dart';
 import '../../../../../core/widgets/custom_circular_button.dart';
 
@@ -18,7 +21,7 @@ class BestSellerProductsView extends StatelessWidget {
       stream: FirebaseFirestore.instance
           .collection('users')
           .doc(auth.currentUser!.uid)
-          .collection('products')
+          .collection(CategoryType.products.name)
           .snapshots(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
@@ -36,7 +39,13 @@ class BestSellerProductsView extends StatelessWidget {
               productId: snapshot.data!.docs[index].id,
               productModel:
                   ProductModel.fromJson(snapshot.data!.docs[index].data()),
-              onTap: () {},
+              onTap: () => AppRouter.router.push(
+                AppRouter.detailsView,
+                extra: {
+                  'productId': snapshot.data!.docs[index].id,
+                  'categoryType': CategoryType.products,
+                },
+              ),
             ),
           );
         }
@@ -47,7 +56,7 @@ class BestSellerProductsView extends StatelessWidget {
 }
 
 class BestSellerProductView extends StatelessWidget {
-  const BestSellerProductView(
+  BestSellerProductView(
       {super.key,
       required this.onTap,
       required this.productId,
@@ -56,6 +65,7 @@ class BestSellerProductView extends StatelessWidget {
   final VoidCallback onTap;
   final String productId;
   final ProductModel productModel;
+  final FireServices fireServices = FireServices();
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +83,7 @@ class BestSellerProductView extends StatelessWidget {
               color: const Color(0xfff8f6f6),
               shadowColor: Colors.white,
               child: Padding(
-                padding: const EdgeInsetsDirectional.only(start: 10,end: 10),
+                padding: const EdgeInsetsDirectional.only(start: 10, end: 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -123,22 +133,19 @@ class BestSellerProductView extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: CustomCircularButton(
               onTap: () async {
-                try {
-                  String currentUserUID =
-                      FirebaseAuth.instance.currentUser!.uid;
-                  await FirebaseFirestore.instance
-                      .collection('users')
-                      .doc(currentUserUID)
-                      .collection('products')
-                      .doc(productId)
-                      .update(
-                      {'isFavorite': !productModel.isFavorite!});
-                } on FirebaseAuthException catch (e) {
-                  if (context.mounted) {
+                await fireServices.toggleFavorite(
+                  productId: productId,
+                  productModel: productModel,
+                  categoryType: CategoryType.products,
+                  onSuccess: () {},
+                  onError: (e) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text(e.message!)));
-                  }
-                }
+                      SnackBar(
+                        content: Text(e),
+                      ),
+                    );
+                  },
+                );
               },
               backgroundColor: Colors.white,
               iconColor: (productModel.isFavorite! == false)
