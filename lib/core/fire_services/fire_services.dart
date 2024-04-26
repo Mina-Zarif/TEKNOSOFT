@@ -17,7 +17,6 @@ class FireServices {
   }) async {
     {
       try {
-        print("categoryType.name is ${categoryType.name}");
         await firestore
             .collection('users')
             .doc(_auth.currentUser!.uid)
