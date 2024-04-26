@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "693624745919",
+    "project_id": "shopink-c705a",
+    "storage_bucket": "shopink-c705a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:693624745919:android:347e03480fb8f3ddda7b0a",
+        "android_client_info": {
+          "package_name": "com.example.shopink"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCdYLpSRu8Rpotpzt-QNX1jGxnPrqIDmRY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
