@@ -88,4 +88,22 @@ class FireServices {
       onError(e.message!);
     }
   }
+
+  Future<void> updateProfile({
+    required String fullName,
+    required String bio,
+    required String phone,
+    required Function(String error) onError,
+    required Function() onSuccess,
+  }) async {
+    try {
+      await firestore.collection('users').doc(_auth.currentUser!.uid).update({
+        'fullName': fullName,
+        'phone': phone,
+      });
+      onSuccess();
+    } on FirebaseAuthException catch (e) {
+      onError(e.message!);
+    }
+  }
 }

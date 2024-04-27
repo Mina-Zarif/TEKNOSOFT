@@ -34,6 +34,14 @@ class _CartBodyState extends State<CartBody> {
           for (var doc in snapshot.data!.docs) {
             subTotal += doc['price'];
           }
+          if (snapshot.data!.docs.isEmpty) {
+            return const Center(
+              child: Text(
+                "Empty cart",
+                style: Styles.textStyle20,
+              ),
+            );
+          }
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             child: Column(

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shopink/core/utils/styles.dart';
 import 'package:shopink/features/favourite/favourite_view/widgets/favourite_item_view.dart';
 import 'package:shopink/features/home/date/models/product_model.dart';
 
@@ -21,6 +22,14 @@ class FavouriteBody extends StatelessWidget {
           .snapshots(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
+          if (snapshot.data!.docs.isEmpty) {
+            return const Center(
+              child: Text(
+                "Favourite is empty",
+                style: Styles.textStyle20,
+              ),
+            );
+          }
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             child: ListView.separated(

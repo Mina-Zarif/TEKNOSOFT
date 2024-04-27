@@ -1,7 +1,7 @@
+import 'package:enefty_icons/enefty_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:shopink/core/utils/go_router.dart';
 
-import '../../../../constants.dart';
 import 'name_bio_view.dart';
 
 class AccountView extends StatelessWidget {
@@ -19,12 +19,10 @@ class AccountView extends StatelessWidget {
           CircleAvatar(
             backgroundColor: Colors.grey[300],
             radius: 25,
-            backgroundImage: const NetworkImage(kProfileImage),
+            child: const Icon(EneftyIcons.profile_outline, size: 28),
           ),
           const SizedBox(width: 15),
           const NameAndBio(
-            name: "Mina Zarif",
-            email: "mine1062016665@gmail.com",
             crossAxisAlignment: CrossAxisAlignment.start,
           ),
           const Spacer(),
